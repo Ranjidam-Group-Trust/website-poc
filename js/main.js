@@ -1,9 +1,9 @@
 /* 
-  Ranjidam Group Trust (RGT) - Main JavaScript
+  Ranjidam Group Trust (RGT) - Comprehensive JavaScript
 */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Mobile Menu Toggle
+  // 1. Mobile Menu & Dropdown Toggles
   const hamburger = document.querySelector('.hamburger');
   const navMenu = document.querySelector('.nav-menu');
 
@@ -13,14 +13,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const isExpanded = navMenu.classList.contains('active');
       hamburger.setAttribute('aria-expanded', isExpanded);
     });
-
-    // Close menu when clicking nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-      });
-    });
   }
+
+  // Handle Mobile Dropdown Accordion Clicking
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    const dropdownToggle = item.querySelector('.dropdown-toggle');
+    if (dropdownToggle) {
+      dropdownToggle.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1100) {
+          e.preventDefault();
+          item.classList.toggle('open');
+        }
+      });
+    }
+  });
+
+  // Close Mobile Menu on Outside Link Click
+  document.querySelectorAll('.dropdown-item a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (navMenu) navMenu.classList.remove('active');
+    });
+  });
 
   // 2. Sticky Navbar Elevation Effect
   const header = document.querySelector('.site-header');
@@ -32,12 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 3. Highlight Active Navigation Item Based on URL
+  // 3. Highlight Active Navigation Item Based on Current Page URL
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-link').forEach(link => {
+  document.querySelectorAll('.nav-link, .dropdown-item a').forEach(link => {
     const href = link.getAttribute('href');
     if (href === currentPath || (currentPath === '' && href === 'index.html')) {
       link.classList.add('active');
+      // If inside a dropdown, highlight parent link too
+      const parentNavItem = link.closest('.nav-item');
+      if (parentNavItem) {
+        const parentLink = parentNavItem.querySelector('.dropdown-toggle');
+        if (parentLink) parentLink.classList.add('active');
+      }
     }
   });
 
@@ -48,9 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       
       const submitBtn = contactForm.querySelector('button[type="submit"]');
-      const originalText = submitBtn.innerHTML;
+      const originalText = submitBtn ? submitBtn.innerHTML : 'Submit';
       
-      // Basic input check
       const name = document.getElementById('name')?.value.trim();
       const email = document.getElementById('email')?.value.trim();
       const message = document.getElementById('message')?.value.trim();
@@ -60,21 +79,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // UI Feedback state
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = 'Sending Message...';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Sending Message...';
+      }
 
       setTimeout(() => {
-        // Show success alert card
-        const formCard = contactForm.parentElement;
         contactForm.reset();
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalText;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
 
         const successMsg = document.createElement('div');
         successMsg.className = 'alert-success';
         successMsg.style.cssText = 'background: #ecfdf5; border: 1px solid #10b981; color: #047857; padding: 1rem; border-radius: 8px; margin-top: 1rem; font-weight: 600; text-align: center;';
-        successMsg.innerHTML = 'Thank you! Your message has been sent successfully. We will get back to you shortly.';
+        successMsg.innerHTML = 'Thank you! Your message has been received by Ranjidam Group Trust. We will respond shortly.';
         
         contactForm.appendChild(successMsg);
 
