@@ -352,9 +352,9 @@ img {
 /* Hero Section */
 .hero {
   position: relative;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f2b48 100%);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(15, 43, 72, 0.82) 100%), url('../img/home-banner.jpg') center/cover no-repeat;
   color: #ffffff;
-  padding: 5rem 0 6rem 0;
+  padding: 5.5rem 0 6.5rem 0;
   overflow: hidden;
 }
 
