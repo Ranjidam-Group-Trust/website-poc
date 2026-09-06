@@ -185,12 +185,13 @@ img {
 
 .brand-text span {
   display: block;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   color: var(--accent-emerald);
   font-weight: 700;
   margin-top: -2px;
+  white-space: nowrap;
 }
 
 /* Nav Menu & Dropdowns */
